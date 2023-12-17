@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import beautify from 'js-beautify';
 import projects from '../../assets/projects.js'
+import './Componenter.css'
 
 const Componenter = ({ exclusions }) => {
-  const [html, setHtml] = useState('');
-  const [styles, setStyles] = useState('');
+  const [currentHtml, setHtml] = useState('');
+  const [currentStyle, setStyles] = useState('');
 
   // get the html/style for the current page and set state
   const htmlContent = () => {
@@ -15,8 +16,8 @@ const Componenter = ({ exclusions }) => {
     const cleanedHtml = cleanHtml(htmlContent, exclusions);
     const cleanedStyles = cleanStyles(cssStyles)
     
-    setHtml(cleanedStyles);
-    setStyles(cssStyles);
+    setHtml(cleanedHtml);
+    setStyles(cleanedStyles);
   };
 
   // format html for display (breaks/indentation)
@@ -28,7 +29,7 @@ const Componenter = ({ exclusions }) => {
     });
   };
 
-  // exclusions:
+  // clean html of exclusions exclusions:
   // if an element className includes 'exclude'
   // the element and it's content are excluded from output
   const cleanHtml = (html) => {
@@ -39,13 +40,19 @@ const Componenter = ({ exclusions }) => {
     return formatHtml(cleanedHtml.substring(0, scriptIndex));
   };
 
-  // remove non-style data from source
+  // exclude non <style> data and remove comments
   const cleanStyles = (css) => {
     const styleRegex = /<style\b[^>]*>(.*?)<\/style>/gs;
     const matches = css.match(styleRegex);
-    return matches
-  }
-
+  
+    if (matches) {
+      const cleanedMatches = matches.map(match => match.replace(/\/\*[\s\S]*?\*\//g, ''));
+      return cleanedMatches;
+    }
+  
+    return null;
+  };
+  
   // base instruction for AI
   const baseRequest = {
     Task: `Create an element/component to replace the pre element with id 'content-creator'. Your returned code will be placed within a React component's return() statement. Follow the guidelines EXTREMELY STRICTLY`,
@@ -63,26 +70,32 @@ const Componenter = ({ exclusions }) => {
   }
 
   // user instruction for AI
-  const userRequest = ``
+  const userRequest = `create a dropdown with 3 options`
 
+
+  // make api request with updated state data
+  const handleRequest = () => {
+    console.log(baseRequest, userRequest, currentHtml)
+  }
 
   useEffect(() => {
     htmlContent();
-    handleRequest(baseRequest, userRequest, html)
   }, []);
-
-
-  const handleRequest = (base, request, html) => {
-
-  }
-
 
   return (
     <>
-    <pre id="content-creator" style={{ textAlign: 'left' }}>
-      {html ? html : ''}
-    </pre>
-    
+      {/* create the display window */}
+      <div id="content-creator">
+        <div>
+          <input type="text"></input>
+          <button>Generate</button>
+        </div>
+        <pre>
+          {currentHtml ? currentHtml : ''}
+          {currentStyle ? currentStyle : ''}
+        </pre>
+      </div>
+
     </>
   );
 };
