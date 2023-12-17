@@ -1,0 +1,53 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.App {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  line-height: 1.5rem;;
+  min-height: 100vh;
+}
+
+p,
+li,
+h1,
+h2,
+h3,
+h4 {
+  overflow-wrap: break-word;
+  hyphens: auto;
+  margin:0;
+  line-height: calc(.125rem + 2ex + .125rem);
+}
+
+/* adding a `modular scale` for headings based on a perfect fifth - source: https://www.modularscale.com/?16&px&1.5*/
+h1 {
+  font-size: 3.375rem;
+}
+h2 {
+  font-size: 2.25rem;
+}
+h3 {
+  font-size: 1.5rem;
+}
+h4 {
+  font-size: 1rem;
+}
+h5 {
+  font-size: 0.667rem;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  margin: 0 auto;
+}
+
+main{
+  padding: 4rem 0 6rem 0;
+}
+section {
+  margin: 2rem 0 4rem 0;
+}

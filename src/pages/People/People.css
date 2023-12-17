@@ -1,0 +1,11 @@
+.people-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem 1.5rem;
+}
+
+.profile-image {
+  width: auto;
+  height: 40vmin;
+  max-height: 18rem;
+}
