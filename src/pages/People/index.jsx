@@ -31,7 +31,7 @@ const People = () => {
       <section>
         <Componenter />
         {/* <NewPersonForm handleRequest={handleRequest} /> */}
-        <div id="secret-element" className='exclude'>
+        <div id="secret-element" className='secret exclude secret-element'>
           this is the excluded text
           <div className='something'>
             and this is the excluded element
