@@ -32,10 +32,13 @@ const People = () => {
         <Componenter />
         {/* <NewPersonForm handleRequest={handleRequest} /> */}
         <div id="secret-element" className='exclude'>
-          exclude
+          this is the excluded text
+          <div className='something'>
+            and this is the excluded element
+          </div>
         </div>
         <div id="not-secret-element">
-          exclude
+          included
         </div>
         <div className="people-list">
           {people.map((p) => (
