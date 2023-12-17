@@ -79,7 +79,7 @@ const Componenter = ({ exclusions }) => {
   }
 
   useEffect(() => {
-    htmlContent();
+    htmlContent()
   }, []);
 
   return (

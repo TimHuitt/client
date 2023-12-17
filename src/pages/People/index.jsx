@@ -31,15 +31,18 @@ const People = () => {
       <section>
         <Componenter />
         {/* <NewPersonForm handleRequest={handleRequest} /> */}
+        
         <div id="secret-element" className='secret exclude secret-element'>
           this is the excluded text
           <div className='something'>
             and this is the excluded element
           </div>
         </div>
-        <div id="not-secret-element">
+
+        <div id="not-secret-element" className=''>
           included
         </div>
+
         <div className="people-list">
           {people.map((p) => (
             <Link to={"/people/" + p._id}>
