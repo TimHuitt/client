@@ -17,6 +17,9 @@
   width: 60%;
   height: 40px;
   border-radius: 5px;
+  color: #444;
+  font-size: 20px;
+  padding-left: 10px;
 }
 #content-creator button {
   padding: 10px;
@@ -36,6 +39,7 @@
   max-height: 60vh;
   background: #aaa;
   color: #111;
+  padding: 10px;
   overflow: auto;
   border: 2px solid black;
   border-radius: 10px;
