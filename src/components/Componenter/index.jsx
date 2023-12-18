@@ -8,10 +8,10 @@ const Componenter = ({ exclusions }) => {
 //**-----------**/
 // ** State ** //
 //**---------**/
-  const [currentHtml, setHtml] = useState('')
-  const [currentStyle, setStyles] = useState('')
+  const [ currentHtml, setHtml ] = useState('')
+  const [ currentStyle, setStyles ] = useState('')
   const [ currentRequest, setRequest ] = useState('')
-
+  const [ user, setUser ] = useState('')
   const [ responseData, setResponseData ] = useState(null)
   const [ requestData, setRequestData ] = useState(null)
 
@@ -26,7 +26,7 @@ const Componenter = ({ exclusions }) => {
     const htmlContent = body ? body.innerHTML : ''
     const cssStyles = document.documentElement.innerHTML
 
-    const cleanedHtml = cleanHtml(htmlContent, exclusions)
+    const cleanedHtml = cleanExclusions(htmlContent, exclusions)
     const cleanedStyles = cleanStyles(cssStyles)
     
     setHtml(cleanedHtml)
@@ -48,7 +48,7 @@ const Componenter = ({ exclusions }) => {
   // OR, (full) the element and it's content are excluded from output
   
   // partial exclusion
-  const cleanHtml = (html) => {
+  const cleanExclusions = (html) => {
     const regexExcludeClass = /(<[^>]*\sclass\s*=\s*['"]([^'"]*exclude[^'"]*)['"][^>]*>)[\s\S]*?(<\/[^>]*>)/g;
     const cleanedHtml = html.replace(regexExcludeClass, '$1$3');
     const scriptIndex = cleanedHtml.lastIndexOf('<script');
@@ -57,7 +57,7 @@ const Componenter = ({ exclusions }) => {
   };
 
   // full exclusion
-  const cleanHtmlFull = (html) => {
+  const cleanExclusionsFull = (html) => {
     const regexExcludeClass = /<[^>]*\sclass\s*=\s*['"]([^'"]*exclude[^'"]*)['"][^>]*>[\s\S]*?<\/[^>]*>/g
     const cleanedHtml = html.replace(regexExcludeClass, '')
     const scriptIndex = cleanedHtml.lastIndexOf('<script')
@@ -74,13 +74,16 @@ const Componenter = ({ exclusions }) => {
       const cleanedMatches = matches.map(match => match.replace(/\/\*[\s\S]*?\*\//g, ''))
       return cleanedMatches
     }
-  
     return null
   }
 
+  const randomUser = () => {
+    setUser(Math.floor(Math.random()*100000))
+  }
 
   useEffect(() => {
     htmlContent()
+    randomUser()
   }, [])
 
 //**---------------------------**/
@@ -91,7 +94,6 @@ const Componenter = ({ exclusions }) => {
   // const sendRequest = (data) => {
   //   return(response)
   // }
-
 
   const sendRequest = async () => {
     const url = "http://localhost:4000/api";
@@ -122,7 +124,6 @@ const Componenter = ({ exclusions }) => {
       const resData = await sendRequest();
   
       if (resData) {
-        // console.log(resData.response.content); // This will log the JSON data from the response body
         setResponseData(formatHtml(resData.response.content));
         setActiveTab('response');
       }
@@ -142,8 +143,6 @@ const Componenter = ({ exclusions }) => {
   }
 
   const handleGenerate = async (e) => {
-    const user = 'x'
-
     await setRequestData({
       "userId": user,
       "request": currentRequest, 
@@ -160,6 +159,7 @@ const Componenter = ({ exclusions }) => {
   const handleReset = () => {
     setRequest('')
     setResponseData('')
+    randomUser()
   }
 
   const handleRequestTab = () => {
