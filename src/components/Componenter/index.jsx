@@ -94,42 +94,43 @@ const Componenter = ({ exclusions }) => {
 
 
   const sendRequest = async () => {
-    const url = "http://localhost:4000/api"
-    
-    console.log(requestData)
-
+    const url = "http://localhost:4000/api";
+  
     try {
       const res = await fetch(url, {
         method: 'POST',
-        body: JSON.stringify(requestData)
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestData),
       });
-
-      
+  
       if (res.ok) {
-        return res.json()
+        const jsonData = await res.json(); // Extract JSON data from the response body
+        return jsonData;
       } else {
-        throw new Error("Invalid request!")
-        console.log("Invalid request!")
+        throw new Error("Invalid request!");
       }
     } catch (err) {
-      console.log(err.message)
+      console.log(err.message);
     }
-  }
-
-  // make api request with updated state data
+  };
+  
+  // make API request with updated state data
   const handleRequest = async () => {
     try {
-      const res = await sendRequest(requestData)
-
-      if (res) {
-        setResponseData(formatHtml(res.html))
-        setActiveTab('response')
+      const resData = await sendRequest();
+  
+      if (resData) {
+        console.log(resData); // This will log the JSON data from the response body
+        // setResponseData(formatHtml(resData));
+        // setActiveTab('response');
       }
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
-    // setIsLoading(false)
-  }
+    // setIsLoading(false);
+  };
 
 //**------------------------**/
 // ** UI/Button Handling ** //
