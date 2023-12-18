@@ -122,9 +122,9 @@ const Componenter = ({ exclusions }) => {
       const resData = await sendRequest();
   
       if (resData) {
-        console.log(resData); // This will log the JSON data from the response body
-        // setResponseData(formatHtml(resData));
-        // setActiveTab('response');
+        // console.log(resData.response.content); // This will log the JSON data from the response body
+        setResponseData(formatHtml(resData.response.content));
+        setActiveTab('response');
       }
     } catch (err) {
       console.log(err);
