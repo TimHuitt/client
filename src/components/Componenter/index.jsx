@@ -7,6 +7,7 @@ const Componenter = ({ exclusions }) => {
   const [currentHtml, setHtml] = useState('')
   const [currentStyle, setStyles] = useState('')
   const [ currentRequest, setRequest ] = useState('')
+  
   // get the html/style for the current page and set state
   const htmlContent = () => {
     const body = document.querySelector('body')
@@ -66,7 +67,7 @@ const Componenter = ({ exclusions }) => {
 
   // make api request with updated state data
   const handleRequest = () => {
-    console.log(baseRequest, currentRequest, currentHtml)
+    console.log({request: currentRequest, html: currentHtml})
   }
 
   useEffect(() => {
@@ -82,6 +83,11 @@ const Componenter = ({ exclusions }) => {
     handleRequest()
   }
 
+  const handleReset = () => {
+    setRequest('')
+  }
+  
+
   return (
     <>
       {/* create the display window */}
@@ -89,9 +95,10 @@ const Componenter = ({ exclusions }) => {
         <div>
           <input type="text" value={currentRequest} onChange={handleChange} placeholder="Enter a request for a custom element or component"></input>
           <button onClick={handleClick}>Generate</button>
+          <button onClick={handleReset}>X</button>
         </div>
         <pre>
-          {currentHtml ? `Review the details below for accuracy and privacy concerns.
+          {currentHtml ? `\nReview the details below for accuracy and privacy concerns.
 If the contents of an element should be excluded, add the 'exclude' class to the element.
 Click Generate to send the request and receive the auto component AI generated code.
 

@@ -1,0 +1,3 @@
+const response = {
+  html: `{projects.map((project, index) => (<div key={index} style={{ border: '1px solid #ccc', padding: '16px', marginBottom: '16px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}><h3>{project.title}</h3><p>{project.description}</p><div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>{project.images.map((image, imgIndex) => (<img key={imgIndex} src={image} alt={\`Project Image \${imgIndex + 1}\`} style={{ width: '100%', maxWidth: '150px', marginBottom: '8px' }} />))}</div><div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}><a href={project.gitLink} style={{ color: 'blue' }}>GitHub</a><a href={project.deployLink} style={{ color: 'green' }}>Deployed</a></div></div>))}`
+};
