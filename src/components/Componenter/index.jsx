@@ -88,14 +88,39 @@ const Componenter = ({ exclusions }) => {
 //**-------------------------**/
 
   // TEMP FUNCTION FOR TESTING
-  const sendRequest = (data) => {
-    return(response)
+  // const sendRequest = (data) => {
+  //   return(response)
+  // }
+
+
+  const sendRequest = async () => {
+    const url = "http://localhost:4000/api"
+    
+    console.log(requestData)
+
+    try {
+      const res = await fetch(url, {
+        method: 'POST',
+        body: JSON.stringify(requestData)
+      });
+
+      
+      if (res.ok) {
+        return res.json()
+      } else {
+        throw new Error("Invalid request!")
+        console.log("Invalid request!")
+      }
+    } catch (err) {
+      console.log(err.message)
+    }
   }
 
   // make api request with updated state data
   const handleRequest = async () => {
     try {
       const res = await sendRequest(requestData)
+
       if (res) {
         setResponseData(formatHtml(res.html))
         setActiveTab('response')
@@ -103,7 +128,7 @@ const Componenter = ({ exclusions }) => {
     } catch (err) {
       console.log(err)
     }
-    setIsLoading(false)
+    // setIsLoading(false)
   }
 
 //**------------------------**/
@@ -116,12 +141,20 @@ const Componenter = ({ exclusions }) => {
   }
 
   const handleGenerate = async (e) => {
+    const user = 'x'
+
     await setRequestData({
-      request: currentRequest, 
-      html: currentHtml
+      "userId": user,
+      "request": currentRequest, 
+      "html": currentHtml
     })
-    handleRequest()
   }
+
+  useEffect(() => {
+    if (requestData !== null) {
+      handleRequest();
+    }
+  },[requestData])
 
   const handleReset = () => {
     setRequest('')
@@ -133,6 +166,11 @@ const Componenter = ({ exclusions }) => {
   }
   const handleResponseTab = () => {
     setActiveTab('response')
+  }
+
+  const copyToClipboard = async () => {
+    const text = activeTab
+    await navigator.clipboard.writeText(text)
   }
   
 //**---------------**/
