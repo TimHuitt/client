@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { getPeople } from '../../utilities/people-service'
 import './People.css'
 import NewPersonForm from './NewPersonForm'
-import Componenter from '../../components/Componenter'
+import AutoComponent from '../../components/Componenter'
 
 const People = () => {
   const [isLoading, setIsLoading] = useState(true)
@@ -29,7 +29,7 @@ const People = () => {
   } else {
     return (
       <section>
-        <Componenter />
+        <AutoComponent />
         {/* <NewPersonForm handleRequest={handleRequest} /> */}
         
         <div id="secret-element" className='secret secret-element'>

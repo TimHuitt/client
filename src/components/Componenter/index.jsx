@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react'
-import beautify from 'js-beautify'
-import response from '../../assets/response.js'
-import './Componenter.css'
+import beautify from 'js-beautify';
+import './auto-component.css'
 
-const Componenter = ({ exclusions }) => {
+const AutoComponent = ({ exclusions }) => {
 
 //**-----------**/
 // ** State ** //
@@ -12,6 +11,7 @@ const Componenter = ({ exclusions }) => {
   const [ currentStyle, setStyles ] = useState('')
   const [ currentRequest, setRequest ] = useState('')
   const [ user, setUser ] = useState('')
+
   const [ responseData, setResponseData ] = useState(null)
   const [ requestData, setRequestData ] = useState(null)
 
@@ -96,7 +96,7 @@ const Componenter = ({ exclusions }) => {
   // }
 
   const sendRequest = async () => {
-    const url = "http://localhost:4000/api";
+    const url = "https://server-auto-component-46830ff262f8.herokuapp.com/api";
   
     try {
       const res = await fetch(url, {
@@ -224,4 +224,4 @@ const Componenter = ({ exclusions }) => {
   )
 }
 
-export default Componenter
+export default AutoComponent
