@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import beautify from 'js-beautify';
+// import beautify from 'js-beautify';
 import './auto-component.css'
 
 const AutoComponent = ({ exclusions }) => {
@@ -34,13 +34,13 @@ const AutoComponent = ({ exclusions }) => {
   }
 
   // format html for display (breaks/indentation)
-  const formatHtml = (html) => {
-    return beautify.html(html, {
-      indent_size: 2,
-      wrap_line_length: 80,
-      max_preserve_newlines: 1,
-    })
-  }
+  // const formatHtml = (html) => {
+  //   return beautify.html(html, {
+  //     indent_size: 2,
+  //     wrap_line_length: 80,
+  //     max_preserve_newlines: 1,
+  //   })
+  // }
 
   // clean html of exclusions:
   // if an element className includes 'exclude'
@@ -53,17 +53,18 @@ const AutoComponent = ({ exclusions }) => {
     const cleanedHtml = html.replace(regexExcludeClass, '$1$3');
     const scriptIndex = cleanedHtml.lastIndexOf('<script');
 
-    return formatHtml(cleanedHtml.substring(0, scriptIndex));
+    // return formatHtml(cleanedHtml.substring(0, scriptIndex));
+    return cleanedHtml.substring(0, scriptIndex);
   };
 
   // full exclusion
-  const cleanExclusionsFull = (html) => {
-    const regexExcludeClass = /<[^>]*\sclass\s*=\s*['"]([^'"]*exclude[^'"]*)['"][^>]*>[\s\S]*?<\/[^>]*>/g
-    const cleanedHtml = html.replace(regexExcludeClass, '')
-    const scriptIndex = cleanedHtml.lastIndexOf('<script')
-    
-    return formatHtml(cleanedHtml.substring(0, scriptIndex))
-  }
+  // const cleanExclusionsFull = (html) => {
+  //   const regexExcludeClass = /<[^>]*\sclass\s*=\s*['"]([^'"]*exclude[^'"]*)['"][^>]*>[\s\S]*?<\/[^>]*>/g
+  //   const cleanedHtml = html.replace(regexExcludeClass, '')
+  //   const scriptIndex = cleanedHtml.lastIndexOf('<script')
+  //   
+  //   return formatHtml(cleanedHtml.substring(0, scriptIndex))
+  // }
 
   // exclude non <style> data and remove comments
   const cleanStyles = (css) => {
@@ -108,7 +109,7 @@ const AutoComponent = ({ exclusions }) => {
       });
   
       if (res.ok) {
-        const jsonData = await res.json(); // Extract JSON data from the response body
+        const jsonData = await res.json();
         return jsonData;
       } else {
         throw new Error("Invalid request!");
@@ -124,7 +125,8 @@ const AutoComponent = ({ exclusions }) => {
       const resData = await sendRequest();
   
       if (resData) {
-        setResponseData(formatHtml(resData.response.content));
+        // setResponseData(formatHtml(resData.response.content));
+        setResponseData(resData.response.content);
         setActiveTab('response');
       }
     } catch (err) {
@@ -170,7 +172,7 @@ const AutoComponent = ({ exclusions }) => {
   }
 
   const copyToClipboard = async () => {
-    const text = activeTab
+    const text = activeTab === 'response' ? responseData : requestData
     await navigator.clipboard.writeText(text)
   }
   
@@ -179,15 +181,15 @@ const AutoComponent = ({ exclusions }) => {
 //**-------------**/
 
   const requestHTML = currentHtml ? (
-    `Review the details below for accuracy and privacy concerns.
-    If the contents of an element should be excluded, add the 'exclude' class to the element.
-    Click Generate to send the request and receive the auto component AI generated code.
+`Review the details below for accuracy and privacy concerns.
+If the contents of an element should be excluded, add the 'exclude' class to the element.
+Click Generate to send the request and receive the auto component AI generated code.
 
-    User Request:\n    ` 
-      + currentRequest 
-      + "\n\nUser HTML:\n" 
-      + currentHtml 
-    ) : 'There was an error collecting your HTML. Ensure no top level elements are assigned the class "exclude"'
+User Request:\n    ` 
++ currentRequest 
++ "\n\nUser HTML:\n" 
++ currentHtml 
+) : 'There was an error collecting your HTML. Ensure no top level elements are assigned the class "exclude"'
     
   const responseHtml = responseData ? (
     responseData
@@ -216,7 +218,7 @@ const AutoComponent = ({ exclusions }) => {
            {activeTab === 'request' ? requestHTML : responseHtml}
           </pre>
         </div>
-        <div className="copy-btn">
+        <div className="copy-btn" onClick={copyToClipboard} style={activeTab !== 'response' ? { display: 'none' } : null}>
           copy
         </div>
       </div>
